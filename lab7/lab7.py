@@ -98,20 +98,18 @@ input("Press Enter to close...")
 # EXERCISE
 # ----------------------------
 
-url = "https://datahub.io/core/english-premier-league/r/season2324.csv"
+url1 = "https://datahub.io/core/english-premier-league/r/season-2324.csv" 
 
-file_name = "epl_matches.csv"
-
-print("\nDownloading external data...")
-response1 = requests.get(url)
+file_name1 = "epl_matches.csv"
+response1 = requests.get(url1)
 if response1.status_code == 200:
-    with open(file_name, "wb") as f:
+    with open(file_name1, 'wb') as f:
         f.write(response1.content)
-        print("Download Complete.")
+    print(f"Downloaded complete")
 else:
     print("Download failed.")
 
-matches = pd.read_csv(file_name)
+matches = pd.read_csv(file_name1)
 print(matches.head())
 
 burnley_vs_man_city = matches[matches["HomeTeam"].str.contains("Burnley")]
@@ -119,5 +117,34 @@ burnley_away_vs_man_city = matches[matches["AwayTeam"].str.contains("Burnley")]
 man_city_vs_burnley = matches[matches["AwayTeam"].str.contains("Man City")]
 man_city_away_vs_burnley = matches[matches["HomeTeam"].str.contains("Man City")]
 
-home_avg_burnley = burnley_vs_man_city["FTHG"].mean()
-away_avg_burnley = burnley_away_vs_man_city["FTAG"].mean()
+home_avg_burnley_plus = burnley_vs_man_city["FTHG"].mean()
+away_avg_burnley_points = burnley_away_vs_man_city["FTAG"].mean()
+home_avg_man_city_plus = man_city_vs_burnley["FTHG"].mean()
+away_avg_man_city_points = man_city_away_vs_burnley["FTAG"].mean()
+print(f"Burnley home average {home_avg_burnley_plus}")
+print(f"Burnley away average {away_avg_burnley_points}")
+print(f"Man City home average {home_avg_man_city_plus}")
+print(f"Man City away average {away_avg_man_city_points}")
+
+import matplotlib.pyplot as plt
+
+metrics = ['FTAG', 'FTHG']
+home_values = [home_avg_burnley_plus, home_avg_man_city_plus]
+away_values = [away_avg_burnley_points, away_avg_man_city_points]
+
+x = range(len(metrics))
+bar_width = 0.35
+
+plt.figure(figsize=(8, 5))
+plt.bar([i - bar_width/2 for i in x], home_values,width=bar_width, label='Home', color='skyblue')
+plt.bar([i + bar_width/2 for i in x], away_values,width=bar_width, label='Away', color='orange')
+
+plt.xticks(x, metrics)
+plt.title('Burnley vs Man City — Home vs Away Comparison')
+plt.ylabel('Average Value')
+plt.legend()
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.tight_layout()
+plt.show(block=True)
+
+input("Press Enter to close...")
