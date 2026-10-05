@@ -13,3 +13,14 @@ def divide(a,b):
 
     return a/b
 
+# execrise 2
+# create a function that validates a password 8+ characters, contains at least one 
+def validate_password(password):
+    if len(password) < 8:
+        return False
+    return any(char.isdigit() for char in password)
+
+# execrise 3
+# create a function to check if a number is even
+def is_even(n):
+    return n % 2 == 0 and n != 0
