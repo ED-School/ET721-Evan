@@ -1,75 +1,63 @@
 console.log("Evan Dong")
-// collect items from the form
-const itemForm = document.querySelector("#itemForm")
-
-// add an event to the form
-itemForm.addEventListener("submit", async function(event){
+const itemForm = document.querySelector('#itemForm')
+itemForm.addEventListener("submit", async function(event) {
     event.preventDefault()
-    const name = document.querySelector("#name").value
-    const price = document.querySelector("#price").value
+    const name = document.querySelector('#name').value
+    const price = document.querySelector('#price').value
 
     try{
-        // await to pause request until the request finishes
-        // fetch() sends an HTTP request to a server
-        const res = await fetch("http://127.0.0.1:5000/items", {method: "POST", headers: {"Content-type":"application/json"},
+        const res = await fetch("http://127.0.0.1:5000/items", {method: "POST", headers: {"Content-type":"application/json"} ,
             body: JSON.stringify({name: name, price: Number(price)})
         }
         )
         const data = await res.json()
-        document.querySelector("#response").innerText = "Response: " + JSON.stringify(data)
-    }
+        document.querySelector('#response').innerText = "Response: " + JSON.stringify(data)
+    } 
     catch(error){
-        document.querySelector("#response").innerText = "Error: " + error
+        document.querySelector('#response').innerText = "Error: " + error
     }
 })
-
-// loading all items
-async function loaditems(){
-    const res =await fetch("http://127.0.0.1:5000/items")
+async function loaditems() {
+    const res = await fetch("http://127.0.0.1:5000/items")
     const data = await res.json()
 
-    //collect the elements to print all items
-    const list = documents.querySelector(".itemlist")
+    const list = document.querySelector('.itemslist')
+    list.innerHTML = ""
 
-    // use a loop to place each items in the json data to a list
-    for (const id in data){
+    for(const id in data){
         const item = data[id]
-        const li = document.createElement("li")
+        const li = document.createElement('li')
         li.innerHTML = `ID = ${id}, name = ${item.name}, price = ${item.price}
-        <button onclick = "showupdatedform("${id}", "${item.name}", "${item.price}")"> Update </button>
-        <button onclick = "deleteitem("${id})"> Delete </button>
+        <button onclick = "showupdatedform('${id}', '${item.name}', '${item.price}')"> Update </button>
+        <button onclick = "deleteditem('${id}')"> Delete </button>
         `
         list.appendChild(li)
     }
 }
-// function to collect the selected item name, id, and price
-function showupdateform(id,name,price){
-    document.querySelector("#updatesection").style.display = "block"
+
+function showupdatedform(id, name, price){
+    document.querySelector("#updatedsection").style.display = "block"
     document.querySelector("#updateName").value = name
     document.querySelector("#updateID").value = id
     document.querySelector("#updatePrice").value = price
 }
-
-// function to update the selected item name and or price
-async function updateItem(){
+async function updateItems() {
     const id = document.querySelector("#updateID").value
     const name = document.querySelector("#updateName").value
     const price = document.querySelector("#updatePrice").value
-
-    // update the json data in the localhost
     const res = await fetch(`http://127.0.0.1:5000/items/${id}`, {
         method: "PUT",
         headers: {"Content-type" : "application/json"},
-        body: JSON.stringify({name: name, price: Number(price)})
+        body: JSON.stringify({name: name, price:Number(price)})
     })
     const html = await res.text()
     document.body.innerHTML = html
-}
 
-// DELETE ITEM
-async function deleteitem(id){
-    const res = await fetch(`http://127.0.0.1:5000/items/${id}`,
-    {
-        method: "DELETE"
+}
+async function deleteditem(id) {
+    const res = await fetch(`http://127.0.0.1:5000/items/${id}`, {
+    method: "DELETE",
     })
+    const html = await res.text()
+    document.body.innerHTML = html
 }

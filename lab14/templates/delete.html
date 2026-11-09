@@ -7,9 +7,13 @@
     <title>Delete Item{{item_id}}</title>
 </head>
 <body>
-    <h1>Item Deleted</h1>
-    <p>ID: {{item_id}}</p>
-    <p>Deleted Value: {{deleted_item}}</p>
-    <a href="{{url_for('home')}}">Back to home</a>
+    <main class="page-shell status-page">
+        <div class="status-card">
+            <h1>Item Deleted</h1>
+            <p><strong>ID:</strong> {{item_id}}</p>
+            <p><strong>Deleted Value:</strong> {{deleted_item}}</p>
+            <a class="nav-link" href="{{url_for('home')}}">Back to home</a>
+        </div>
+    </main>
 </body>
 </html>
