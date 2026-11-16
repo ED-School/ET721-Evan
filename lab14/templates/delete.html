@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename ='style.css')}}">
+    <title>Delete Item{{item_id}}</title>
+</head>
+<body>
+    <main class="page-shell status-page">
+        <div class="status-card">
+            <h1>Item Deleted</h1>
+            <p><strong>ID:</strong> {{item_id}}</p>
+            <p><strong>Deleted Value:</strong> {{deleted_item}}</p>
+            <a class="nav-link" href="{{url_for('home')}}">Back to home</a>
+        </div>
+    </main>
+</body>
+</html>
